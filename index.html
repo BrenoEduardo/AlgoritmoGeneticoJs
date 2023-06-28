@@ -231,9 +231,9 @@
 
         }
         function mesclar(nomes) {
-            const pai = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
-            const mae = Math.floor(Math.random() * (10 - 0 + 1)) + 0;
-
+            const pai = Math.floor(Math.random() * ((nomes.length/2) - 0 + 1)) + 0;
+            const mae = Math.floor(Math.random() * (nomes.length - 0 + 1)) + 0;
+            console.log(nomes, 'e')
             const tamanhoParte = 5;
             const partes = [];
             const partesMae = [];
@@ -254,7 +254,32 @@
                 const segundoArrayDepois = partesMae.slice(corte + 1);
                 const primeir_array_filho = primeiroArrayAntes.concat(segundoArrayDepois);
                 const segunda_array_filho = segundoArrayAntes.concat(primeiroArrayDepois);
-            }, 100);
+                console.log(primeir_array_filho, 'primeir_array_filho')
+                mutacao(primeir_array_filho, segunda_array_filho)
+            }, 10);
+
+        }
+        function mutacao(filho1, filho2){
+            
+            filho1.map((horarios, index)=>{
+                const cont = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+                const cont2 = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+                const cont3 = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+                const cont4 = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+                const horarioChange = horarios[cont][cont3]
+                filho1[index][cont][cont3] = horarios[cont2][cont4]
+                filho1[index][cont2][cont4] = horarioChange
+            })
+            filho2.map((horarios, index)=>{
+                const cont = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+                const cont2 = Math.floor(Math.random() * (4 - 0 + 1)) + 0;
+                const cont3 = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+                const cont4 = Math.floor(Math.random() * (3 - 0 + 1)) + 0;
+                const horarioChange = horarios[cont][cont3]
+                filho2[index][cont][cont3] = horarios[cont2][cont4]
+                filho2[index][cont2][cont4] = horarioChange
+            })
+            // console.log(filho2, 'filho2')
 
         }
         getUniqueGroups(prof_disc, 4, 50);
