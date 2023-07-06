@@ -12,7 +12,7 @@
         }
     </style>
     <script>
-        const prof_disc = [
+        let prof_disc = [
             "Clarimundo-POO1",
             "Clarimundo-POO1",
             "Clarimundo-POO1",
@@ -116,6 +116,7 @@
         ];
         let cont = [];
         let arrayNota = [];
+        let arrayFilho = [];
         function shuffleArray(array) {
             const shuffledArray = [...array];
             for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -127,7 +128,8 @@
             }
             return shuffledArray;
         }
-        function getUniqueGroups(array, groupSize, pop) {
+        function getUniqueGroups(array, groupSize, pop, isAgain) {
+            if(!isAgain){
             for (let a = 0; a < pop; a++) {
                 const periodos = [];
                 for (let i = 0; i < prof_disc.length; i += 20) {
@@ -149,8 +151,16 @@
                 }
                 validation(groups);
             }
+            ordernacao()
         }
+        else {
+            validation(array);
+        }
+        }
+        let primeira = 0
+        let socorro = []
         function validation(group) {
+            // console.log(group, 'group')
             let contadorValidateFail = 0;
             let contadorValideSucess = 0;
             for (let i = 0; i < 5; i++) {
@@ -160,7 +170,7 @@
                 const terceiro_periodo = group[i + 10];
                 const quarto_periodo = group[i + 15];
                 const quinto_periodo = group[i + 20];
-
+                // console.log(primeiro_periodo, 'primeirp eriodo')
                 loop1: for (let i = 0; i < primeiro_periodo.length; i++) {
                     avial = false;
                     const name_prof_1 = primeiro_periodo[i].split("-");
@@ -214,30 +224,30 @@
             arrayNota.push(group);
             cont.push(contadorValidateFail);
         }
+        let numerosOrdenados;
         function ordernacao() {
             const prof = arrayNota;
             const notas = cont;
-
             const combinedArray = prof.map((nome, index) => ({
                 nome,
                 numero: notas[index],
             }));
-
+            
             combinedArray.sort((a, b) => a.numero - b.numero);
-
+            primeira++;
             const nomesOrdenados = combinedArray.map((objeto) => objeto.nome);
-            const numerosOrdenados = combinedArray.map((objeto) => objeto.numero);
+            numerosOrdenados = combinedArray.map((objeto) => objeto.numero);
+            if(primeira == 1){
+                socorro = numerosOrdenados
+            }
             mesclar(nomesOrdenados)
-
         }
         function mesclar(nomes) {
             const pai = Math.floor(Math.random() * ((nomes.length/2) - 0 + 1)) + 0;
-            const mae = Math.floor(Math.random() * (nomes.length - 0 + 1)) + 0;
-            console.log(nomes, 'e')
+            const mae = Math.floor(Math.random() * (nomes.length - 0)) + 0;
             const tamanhoParte = 5;
             const partes = [];
             const partesMae = [];
-
             for (let i = 0; i < nomes[pai].length; i += tamanhoParte) {
                 const parte = nomes[pai].slice(i, i + tamanhoParte);
                 partes.push(parte);
@@ -254,7 +264,6 @@
                 const segundoArrayDepois = partesMae.slice(corte + 1);
                 const primeir_array_filho = primeiroArrayAntes.concat(segundoArrayDepois);
                 const segunda_array_filho = segundoArrayAntes.concat(primeiroArrayDepois);
-                console.log(primeir_array_filho, 'primeir_array_filho')
                 mutacao(primeir_array_filho, segunda_array_filho)
             }, 10);
 
@@ -279,11 +288,56 @@
                 filho2[index][cont][cont3] = horarios[cont2][cont4]
                 filho2[index][cont2][cont4] = horarioChange
             })
-            // console.log(filho2, 'filho2')
+            let teste = []
+            let teste2 = []
+            filho1.map((res)=>{
+                res.map((test)=>{
+                    teste.push(test)
+                })
+            })
+            filho2.map((res)=>{
+                res.map((test)=>{
+                    teste2.push(test)
+                })
+            })
+            arrayFilho.push(teste)
+            arrayFilho.push(teste2)
+            // console.log(arrayNota, 'arrraynota')
+            // console.log(arrayFilho, 'filho2')
+            if(arrayFilho.length !== arrayNota.length){
+                mesclar(arrayNota)
+            }
+            else {
+                contGeracao++
+                prof_disc = arrayFilho
+                arrayFilho = []
+                teste = []
+                teste2 = []
+                arrayNota = []
+                help.push(numerosOrdenados)
+                if(contGeracao !== geracao){
+                    cont = [];
+                    // console.log('entrei')
+                    // console.log(arrayNota, 'arraynot')
+                    for (let a = 0; a < 50; a++) {
+                        getUniqueGroups(prof_disc[a],0,0, true)
+                    }
+                    ordernacao();
+                }
+                else {
+                    console.log(numerosOrdenados, 'cont')
+                    console.log(help, 'help');
+                    console.log(socorro, 'primeirocont')
+                    console.log(prof_disc, 'foiiiiii')
+                }
+            }
 
         }
-        getUniqueGroups(prof_disc, 4, 50);
-        ordernacao()
+        let geracao = 100;
+        let contGeracao = 0;
+        let help = []
+        getUniqueGroups(prof_disc, 4, 50, false);
+        // ordernacao();
     </script>
 </head>
 
